@@ -1,8 +1,35 @@
-# Comparador de Preços - MVP
+# Achei Barato - Comparador de Preços
 
-Backend em Python para comparação de preços coletando dados de páginas públicas de e-commerce e marketplaces.
+Sistema completo de comparação de preços com backend Python (API) e frontend React (página de vendas).
 
-## Características
+## 📁 Estrutura do Projeto
+
+```
+├── backend/              # API Python (FastAPI)
+│   ├── app.py           # API principal
+│   ├── extractor.py     # Extração de dados
+│   ├── fetcher.py       # Requisições HTTP
+│   ├── list_scraper.py  # Scraping de listagens
+│   ├── normalizer.py    # Normalização de dados
+│   ├── storage.py       # Cache em memória
+│   ├── price_history.py # Histórico de preços (SQLite)
+│   └── requirements.txt # Dependências Python
+│
+├── frontend/             # Frontend React (página de vendas)
+│   ├── src/             # Código fonte React
+│   ├── public/            # Arquivos públicos
+│   ├── package.json       # Dependências Node.js
+│   └── vite.config.ts     # Configuração Vite
+│
+└── static/               # Interface web antiga (legado)
+    ├── index.html
+    ├── script.js
+    └── style.css
+```
+
+## 🚀 Backend (API Python)
+
+### Características
 
 - ✅ Extração de dados sem automação de navegador (apenas HTTP)
 - ✅ Prioriza dados estruturados (JSON embutido, schema.org)
@@ -10,165 +37,92 @@ Backend em Python para comparação de preços coletando dados de páginas públ
 - ✅ Cache em memória (10 minutos)
 - ✅ Detecção de bloqueios (403/429)
 - ✅ API REST com FastAPI
+- ✅ Processamento paralelo com ThreadPoolExecutor
+- ✅ Histórico de preços com SQLite
 
-## Instalação
-
-### Windows (PowerShell)
-
-**Opção 1: Script automático (Recomendado)**
-```powershell
-.\instalar_python.ps1
-```
-
-**Opção 2: Manual**
-1. Instale Python 3.11 ou 3.12:
-   - Via Microsoft Store: Procure "Python 3.11" e instale
-   - Ou baixe de https://www.python.org/downloads/
-   - **IMPORTANTE**: Marque "Add Python to PATH" durante a instalação
-
-2. Instale as dependências:
-   ```powershell
-   python -m pip install -r requirements.txt
-   ```
-
-**Se `pip` não funcionar, use:**
-```powershell
-python -m pip install -r requirements.txt
-```
-
-Veja `INSTALACAO.md` para mais detalhes sobre problemas de instalação.
-
-## Uso
-
-### Iniciar o servidor
+### Instalação
 
 ```bash
+# Instalar dependências Python
+pip install -r requirements.txt
+```
+
+### Uso
+
+```bash
+# Iniciar servidor
 python app.py
-```
 
-Ou com uvicorn diretamente:
-
-```bash
+# Ou com uvicorn
 uvicorn app:app --host 0.0.0.0 --port 8000
 ```
 
-### Endpoint de comparação
+### Endpoints
+
+- `POST /search` - Busca produtos em múltiplas plataformas
+- `POST /compare` - Compara preços de múltiplas URLs
+- `GET /history?url=<url>` - Histórico de preços de um produto
+- `GET /health` - Health check
+- `DELETE /cache` - Limpa cache
+
+## 🎨 Frontend (React)
+
+### Tecnologias
+
+- Vite
+- TypeScript
+- React
+- shadcn-ui
+- Tailwind CSS
+- Supabase
+
+### Instalação
 
 ```bash
-curl -X POST "http://localhost:8000/compare" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "urls": [
-      "https://www.mercadolivre.com.br/produto/123456",
-      "https://www.mercadolivre.com.br/produto/789012"
-    ],
-    "use_cache": true
-  }'
+# Instalar dependências Node.js
+npm install
+
+# Iniciar servidor de desenvolvimento
+npm run dev
 ```
 
-### Exemplo de resposta
-
-```json
-{
-  "total_urls": 2,
-  "successful": 2,
-  "failed": 0,
-  "products": [
-    {
-      "success": true,
-      "url": "https://www.mercadolivre.com.br/produto/123456",
-      "data": {
-        "plataforma": "www.mercadolivre.com.br",
-        "titulo": "Produto Exemplo",
-        "preco": 68.34,
-        "moeda": "BRL",
-        "imagem": "https://...",
-        "frete_gratis": "true",
-        "texto_entrega": "Frete grátis",
-        "url_produto": "https://www.mercadolivre.com.br/produto/123456",
-        "data_coleta": "2024-01-15T10:30:00"
-      }
-    }
-  ]
-}
-```
-
-## Estrutura do Projeto
-
-- `storage.py` - Cache em memória com TTL
-- `fetcher.py` - Requisições HTTP com rate limiting
-- `extractor.py` - Extração de dados (JSON primeiro, HTML fallback)
-- `normalizer.py` - Normalização de preços e interpretação de frete
-- `app.py` - API HTTP com FastAPI
-
-## Estratégia de Extração
-
-1. **Prioridade 1**: JSON embutido
-   - Schema.org (`application/ld+json`)
-   - Variáveis globais (`__NEXT_DATA__`, `__PRELOADED_STATE__`)
-
-2. **Prioridade 2**: Seletores HTML simples
-   - Apenas quando JSON não está disponível
-   - Seletores semânticos e data-testid
-
-## Campos Extraídos
-
-- `plataforma` - Domínio da URL
-- `titulo` - Nome do produto
-- `preco` - Valor numérico
-- `moeda` - Código da moeda (BRL, USD, etc)
-- `imagem` - URL da imagem principal
-- `frete_gratis` - true/false/unknown
-- `texto_entrega` - Texto capturado sobre entrega
-- `url_produto` - URL original
-- `data_coleta` - Timestamp ISO
-
-## Limitações
-
-- Máximo de 50 URLs por requisição
-- Cache em memória (não persiste entre execuções)
-- Rate limiting básico (pode precisar ajuste por plataforma)
-
-## Exemplo de Uso Programático
-
-```python
-from fetcher import Fetcher
-from extractor import Extractor
-from normalizer import Normalizer
-
-fetcher = Fetcher()
-extractor = Extractor()
-normalizer = Normalizer()
-
-url = "https://www.mercadolivre.com.br/produto/123456"
-html = fetcher.fetch(url)
-raw_data = extractor.extract(url, html)
-normalized_data = normalizer.normalize(raw_data)
-
-print(normalized_data)
-
-# Não esqueça de fechar o fetcher
-fetcher.close()
-```
-
-## Testes
-
-Execute os testes básicos:
+### Build
 
 ```bash
-python test_basic.py
+npm run build
 ```
 
-Teste com uma URL real do Mercado Livre:
+## 📊 Histórico de Preços
 
-```bash
-python example_mercadolivre.py https://www.mercadolivre.com.br/produto/MLB1234567890
+O sistema salva automaticamente snapshots de preços em SQLite:
+
+- Salva apenas produtos com `success=true` e `preco != None`
+- Ignora duplicatas (mesma URL dentro de 2 minutos)
+- Endpoint `/history?url=<url>` retorna histórico ordenado
+
+## 🔧 Configuração
+
+### Variáveis de Ambiente
+
+Crie um arquivo `.env` na raiz do projeto:
+
+```env
+# Supabase (se usar)
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_supabase_key
+
+# API Backend
+API_URL=http://localhost:8000
 ```
 
-## Notas Importantes
+## 📝 Notas Importantes
 
-- ⚠️ **Rate Limiting**: O sistema implementa delay de 2-5 segundos entre requisições ao mesmo domínio
+- ⚠️ **Rate Limiting**: Delay de 0.6-1.2s entre requisições ao mesmo domínio
 - ⚠️ **Cache**: Dados são cacheados por 10 minutos por padrão
-- ⚠️ **Bloqueios**: O sistema detecta HTTP 403 e 429 e lança exceções
-- ⚠️ **User-Agent**: Usa User-Agent de navegador comum para evitar bloqueios básicos
+- ⚠️ **Bloqueios**: Sistema detecta HTTP 403/429 e captcha
+- ⚠️ **Paralelismo**: Máximo 6 workers para /compare, 5 para detalhamento Amazon
 
+## 📚 Documentação
+
+- Backend API: Acesse `http://localhost:8000/docs` para documentação Swagger
+- Frontend: Interface React em `http://localhost:5173` (Vite dev server)
