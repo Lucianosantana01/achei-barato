@@ -41,13 +41,13 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
-      <div className="container flex h-20 items-center justify-between">
+      <div className="container flex h-28 items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <img
             src="https://jlrgspohnhtxbxdhvtpk.supabase.co/storage/v1/object/public/ImagensBarateiro/ChatGPT_Image_22_de_dez._de_2025__18_07_23-removebg-preview.png"
             alt="Achei Barato"
-            className="h-24 w-auto object-contain"
+            className="h-48 w-auto object-contain"
           />
           <span className="hidden font-display text-xl font-bold sm:inline-block">
             Comparador
