@@ -43,11 +43,11 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
       <div className="container flex h-16 items-center justify-between overflow-visible">
         {/* Logo */}
-        <Link to="/" className="flex items-end gap-2 overflow-visible">
+        <Link to="/" className="flex items-center gap-2 overflow-visible">
           <img
             src="https://jlrgspohnhtxbxdhvtpk.supabase.co/storage/v1/object/public/ImagensBarateiro/ChatGPT_Image_22_de_dez._de_2025__18_07_23-removebg-preview.png"
             alt="Achei Barato"
-            className="h-48 w-auto object-contain translate-y-2"
+            className="h-[182px] w-auto object-contain"
           />
         </Link>
 
