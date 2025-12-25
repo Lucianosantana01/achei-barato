@@ -44,9 +44,11 @@ export function Header() {
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary">
-            <Search className="h-5 w-5 text-primary-foreground" />
-          </div>
+          <img
+            src="https://jlrgspohnhtxbxdhvtpk.supabase.co/storage/v1/object/public/ImagensBarateiro/ChatGPT_Image_22_de_dez._de_2025__18_07_23-removebg-preview.png"
+            alt="Achei Barato"
+            className="h-10 w-auto object-contain"
+          />
           <span className="hidden font-display text-xl font-bold sm:inline-block">
             Comparador
           </span>
