@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barateiro - Comparador de Preços</title>
+    <link rel="stylesheet" href="/static/style.css?v=6.37">
+</head>
+<body>
+    <!-- Topbar -->
+    <nav class="topbar">
+        <div class="topbar-content">
+            <div class="topbar-left">
+                <img src="https://jlrgspohnhtxbxdhvtpk.supabase.co/storage/v1/object/public/ImagensBarateiro/ChatGPT_Image_22_de_dez._de_2025__18_07_23-removebg-preview.png" 
+                     alt="Barateiro" 
+                     class="topbar-logo"
+                     onerror="this.style.display='none'">
+                <a href="/" class="topbar-brand">
+                    <span class="brand-name">Painel</span>
+                </a>
+            </div>
+            <div class="topbar-right">
+                <span class="topbar-badge">FREE</span>
+                <div class="topbar-avatar"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Layout: Sidebar + Content -->
+    <div class="main-layout">
+        <!-- Sidebar de Filtros -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>Filtros</h3>
+                <button class="sidebar-close" id="sidebarClose" aria-label="Fechar filtros">×</button>
+            </div>
+            
+            <div class="sidebar-content">
+                <!-- Categoria -->
+                <div class="filter-card">
+                    <div class="filter-card-header">
+                        <label class="filter-label">Categoria</label>
+                    </div>
+                    <div class="filter-card-body">
+                        <select id="filterCategory" class="filter-select">
+                            <option value="">Todas as categorias</option>
+                            <option value="informatica">Informática</option>
+                            <option value="celulares">Celulares</option>
+                            <option value="eletronicos">Eletrônicos</option>
+                            <option value="casa">Casa e Decoração</option>
+                            <option value="moda">Moda</option>
+                            <option value="esportes">Esportes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Faixa de Preço -->
+                <div class="filter-card">
+                    <div class="filter-card-header">
+                        <label class="filter-label">Faixa de Preço</label>
+                    </div>
+                    <div class="filter-card-body">
+                        <div class="price-range">
+                            <input type="number" id="filterMinPrice" class="filter-input" placeholder="Mínimo" min="0" aria-label="Preço mínimo">
+                            <span class="price-separator">até</span>
+                            <input type="number" id="filterMaxPrice" class="filter-input" placeholder="Máximo" min="0" aria-label="Preço máximo">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Condição -->
+                <div class="filter-card">
+                    <div class="filter-card-header">
+                        <label class="filter-label">Condição</label>
+                    </div>
+                    <div class="filter-card-body">
+                        <div class="filter-checkboxes">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="filterConditionNew" value="new" class="filter-checkbox">
+                                <span>Novo</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="filterConditionUsed" value="used" class="filter-checkbox">
+                                <span>Usado</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="filterConditionRefurbished" value="refurbished" class="filter-checkbox">
+                                <span>Recondicionado</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Memória RAM -->
+                <div class="filter-card">
+                    <div class="filter-card-header">
+                        <label class="filter-label">Memória RAM</label>
+                    </div>
+                    <div class="filter-card-body">
+                        <select id="filterRam" class="filter-select">
+                            <option value="">Qualquer RAM</option>
+                            <option value="4gb">4 GB</option>
+                            <option value="6gb">6 GB</option>
+                            <option value="8gb">8 GB</option>
+                            <option value="12gb">12 GB</option>
+                            <option value="16gb">16 GB</option>
+                            <option value="32gb">32 GB</option>
+                            <option value="64gb">64 GB</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Armazenamento (HD/SSD) -->
+                <div class="filter-card">
+                    <div class="filter-card-header">
+                        <label class="filter-label">Armazenamento</label>
+                    </div>
+                    <div class="filter-card-body">
+                        <select id="filterStorage" class="filter-select">
+                            <option value="">Qualquer armazenamento</option>
+                            <option value="64gb">64 GB</option>
+                            <option value="128gb">128 GB</option>
+                            <option value="256gb">256 GB</option>
+                            <option value="512gb">512 GB</option>
+                            <option value="1tb">1 TB</option>
+                            <option value="2tb">2 TB</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Frete Grátis -->
+                <div class="filter-card">
+                    <div class="filter-card-body">
+                        <label class="checkbox-label filter-checkbox-large">
+                            <input type="checkbox" id="filterFreeShipping" class="filter-checkbox">
+                            <span>Frete Grátis</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Full -->
+                <div class="filter-card">
+                    <div class="filter-card-body">
+                        <label class="checkbox-label filter-checkbox-large">
+                            <input type="checkbox" id="filterFull" class="filter-checkbox">
+                            <span>Enviado pelo FULL</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Ordenação -->
+                <div class="filter-card">
+                    <div class="filter-card-header">
+                        <label class="filter-label">Ordenar por</label>
+                    </div>
+                    <div class="filter-card-body">
+                        <select id="filterSort" class="filter-select">
+                            <option value="relevance">Relevância</option>
+                            <option value="price_asc">Menor preço</option>
+                            <option value="price_desc">Maior preço</option>
+                            <option value="newest">Mais recentes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Local/CEP -->
+                <div class="filter-card">
+                    <div class="filter-card-header">
+                        <label class="filter-label">CEP (opcional)</label>
+                    </div>
+                    <div class="filter-card-body">
+                        <input type="text" id="filterZipCode" class="filter-input" placeholder="00000-000" maxlength="9" aria-label="CEP">
+                        <small class="filter-hint">Pode afetar o cálculo do frete</small>
+                    </div>
+                </div>
+
+                <!-- Botões de Ação -->
+                <div class="filter-actions">
+                    <button id="applyFiltersBtn" class="btn btn-primary btn-block">
+                        Aplicar Filtros
+                    </button>
+                    <button id="clearFiltersBtn" class="btn btn-secondary btn-block">
+                        Limpar
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Conteúdo Principal -->
+        <main class="main-content">
+            <!-- Header com Search Bar -->
+            <div class="content-header">
+                <h1 class="content-title">Buscar Produtos</h1>
+                <div class="search-bar-container">
+                    <div class="search-bar">
+                        <div class="search-input-wrapper">
+                            <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <input 
+                                type="text" 
+                                id="mainSearchInput" 
+                                placeholder="O que você quer comprar? Ex: iPhone 15 128GB"
+                                class="search-bar-input"
+                                aria-label="Buscar produtos"
+                            >
+                        </div>
+                        <button id="mainSearchBtn" class="search-bar-btn" aria-label="Buscar">
+                            Buscar
+                        </button>
+                    </div>
+                    <div class="search-suggestions" id="searchSuggestions">
+                        <span class="suggestion-chip" data-query="iphone">iPhone</span>
+                        <span class="suggestion-chip" data-query="notebook">Notebook</span>
+                        <span class="suggestion-chip" data-query="smart tv">Smart TV</span>
+                        <span class="suggestion-chip" data-query="ps5">PS5</span>
+                    </div>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle" aria-label="Mostrar filtros">
+                    🔍 Filtros
+                </button>
+            </div>
+
+            <!-- Loading -->
+            <div id="loading" class="loading hidden">
+                <div class="spinner"></div>
+                <p>Buscando produtos...</p>
+            </div>
+
+            <!-- Results -->
+            <div id="results" class="results hidden">
+                <div class="results-header">
+                    <h2 id="resultsTitle" class="results-title">Resultados</h2>
+                    <div class="results-stats">
+                        <span class="stat-badge">
+                            <strong id="statTotal">0</strong> Total
+                        </span>
+                        <span class="stat-badge stat-success">
+                            <strong id="statSuccess">0</strong> Sucessos
+                        </span>
+                        <span class="stat-badge stat-error">
+                            <strong id="statFailed">0</strong> Falhas
+                        </span>
+                    </div>
+                </div>
+                <div id="resultsContent" class="results-grid"></div>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state hidden">
+                <div class="empty-state-icon">🔍</div>
+                <div class="empty-state-title">Nenhum produto encontrado</div>
+                <div class="empty-state-text">Tente ajustar os filtros ou buscar por outro termo</div>
+            </div>
+
+            <!-- Error -->
+            <div id="error" class="error hidden"></div>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <p>Barateiro - Comparador de Preços v1.0.0</p>
+    </footer>
+
+    <script src="/static/script.js?v=6.6"></script>
+</body>
+</html>
