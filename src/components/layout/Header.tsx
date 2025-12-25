@@ -47,7 +47,7 @@ export function Header() {
           <img
             src="https://jlrgspohnhtxbxdhvtpk.supabase.co/storage/v1/object/public/ImagensBarateiro/ChatGPT_Image_22_de_dez._de_2025__18_07_23-removebg-preview.png"
             alt="Achei Barato"
-            className="h-10 w-auto object-contain"
+            className="h-8 w-auto object-contain"
           />
           <span className="hidden font-display text-xl font-bold sm:inline-block">
             Comparador
